@@ -99,3 +99,11 @@
 - Coverage: `V6: OK` (`ALL 100% COVERED`)
 - Audio Mastering: `-21.9 LUFS`, True Peak `-5.4 dBFS`
 - Duration: `80.5s` (`1932` frames @ `24fps`, `1920x1080`)
+
+
+## المرحلة 7 — V7 (07_SAN_NAS_Storage_Networks.mp4)
+[VISUAL] V7_card.png: Slides 11, 12, 13 verbatim text verified, static highlights on Storage Area Network (SAN), Network Attached Storage (NAS), and two different storage architectures, 7 key terms in right column, zero overlaps
+[VISUAL] V7_sheet.png: 75 frames (1 fps) inspected across S1–S10 (incl. s11_storage_media in S1, NAS vs SAN split in S4, s12_conduant_ltx3 in S6–S7, s13_compellent_racks in S8, S8b links, S9 study card, S10 finale), zero overlaps
+- Coverage: `V7: OK` (`ALL 100% COVERED`)
+- Audio Mastering: `-22.0 LUFS`, True Peak `-6.4 dBFS`
+- Duration: `75.0s` (`1800` frames @ `24fps`, `1920x1080`)
