@@ -49,3 +49,15 @@
 ---
 
 ## المرحلة 0: ✔ — commit 75f481f
+
+## المرحلة 0-R (مراجعة وتصحيح المرحلة 0): ✔ — commit 0230b84
+- `[VISUAL] out/debug/comp_layout_l.png — PASS — 4 LinkNodes connected by red dashed arrows to center Hub`
+- `[VISUAL] out/debug/comp_study_card.png — PASS — 2-column StudyCard with 9 glossary terms and full slide text without overflow`
+- `python scripts/verify_phase0.py` -> `PHASE 0: ALL PASS`
+
+## المرحلة 1 — الفيديو 1 (V1: 01_Course_Overview_Agenda.mp4): ✔
+- `[VISUAL] out/debug/V1_card.png — PASS — StudyCard displays Slides 1, 2, 3 verbatim text in 2 columns with HighlightText on 'overview of the different topics' and clean margins`
+- `[VISUAL] out/debug/V1_sheet.png — PASS — 27-frame contact sheet confirms all 8 scenes (S1–S8), Omar wave/point/thumbs poses, PinnedPhoto of Slide 1 & Slide 2 diagrams, Agenda checklist with CheckMark, StudyCard, and NextChip`
+- التغطية النصية (`check_coverage.ts V1`): `V1: OK` (100% من نصوص الشرائح 1 و2 و3).
+- الصوت (`master_audio.py`): `I: -22.0 LUFS`, `Peak: -6.1 dBFS` (ضمن النطاق `-22 LUFS ±0.5` و`<= -3 dBTP`).
+- المدة: `53.0s` (`1272` فريم @ `24fps`، `1920x1080`).
