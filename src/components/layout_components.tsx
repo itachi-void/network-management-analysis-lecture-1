@@ -585,3 +585,114 @@ export const StudyCard: React.FC<{
     </div>
   );
 };
+
+
+// 6. PinnedPhoto (Section 5.3: CARD fill, padding 14px, SketchBox border, 2 tape strips #E9DDC4 at 0.85, no shadow)
+export const PinnedPhoto: React.FC<{
+  src: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  tiltDeg?: number;
+  startFrame?: number;
+  seed?: number;
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
+}> = ({
+  src,
+  x,
+  y,
+  w,
+  h,
+  tiltDeg = 0,
+  startFrame = 0,
+  seed = 42,
+  children,
+  style,
+}) => {
+  const frame = useCurrentFrame();
+  const rel = Math.max(0, frame - startFrame);
+  const p = Math.min(1, rel / 8); // 0.35s = ~8 frames
+  const opacity = p;
+  const scale = 0.94 + 0.06 * p;
+
+  if (frame < startFrame) return null;
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: w,
+        height: h,
+        transform: `rotate(${tiltDeg}deg) scale(${scale})`,
+        transformOrigin: 'center center',
+        opacity,
+        zIndex: 15,
+        ...style,
+      }}
+    >
+      <SketchBox x={0} y={0} w={w} h={h} seed={seed} startFrame={0} drawDurationFrames={8}>
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: w,
+            height: h,
+            padding: 14,
+            boxSizing: 'border-box',
+            backgroundColor: COLORS.CARD,
+          }}
+        >
+          <img
+            src={src.startsWith('http') || src.startsWith('/') ? src : staticFile(src)}
+            alt=""
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
+        </div>
+      </SketchBox>
+
+      {/* Top Left Tape Strip: 120x34, tilt -35deg, color #E9DDC4 at opacity 0.85 */}
+      <div
+        style={{
+          position: 'absolute',
+          left: -20,
+          top: -10,
+          width: 120,
+          height: 34,
+          backgroundColor: '#E9DDC4',
+          opacity: 0.85,
+          transform: 'rotate(-35deg)',
+          pointerEvents: 'none',
+          zIndex: 25,
+        }}
+      />
+
+      {/* Top Right Tape Strip: 120x34, tilt +35deg, color #E9DDC4 at opacity 0.85 */}
+      <div
+        style={{
+          position: 'absolute',
+          right: -20,
+          top: -10,
+          width: 120,
+          height: 34,
+          backgroundColor: '#E9DDC4',
+          opacity: 0.85,
+          transform: 'rotate(35deg)',
+          pointerEvents: 'none',
+          zIndex: 25,
+        }}
+      />
+
+      {children}
+    </div>
+  );
+};
