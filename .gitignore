@@ -1,4 +1,9 @@
 node_modules/
 .remotion/
 *.tmp
-out/
+work/
+out/raw/
+out/final/
+out/debug/*.mp4
+out/debug/*.wav
+out/debug/*.jpg
