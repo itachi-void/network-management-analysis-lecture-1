@@ -68,3 +68,10 @@
 - التغطية النصية (`check_coverage.ts V2`): `V2: OK` (100% من نصوص الشريحة 4).
 - الصوت (`master_audio.py`): `I: -22.0 LUFS`, `Peak: -5.8 dBFS` (ضمن النطاق `-22 LUFS ±0.5` و`<= -3 dBTP`).
 - المدة: `77.0s` (`1848` فريم @ `24fps`، `1920x1080`).
+
+## المرحلة 3 — الفيديو 3 (V3: 03_Desktop_Service_Virtualization.mp4): ✔
+- `[VISUAL] out/debug/V3_card.png — PASS — StudyCard displays Slide 5 and Slide 6 verbatim text with 4 static yellow highlights on left and all 10 glossary items on right`
+- `[VISUAL] out/debug/V3_sheet.png — PASS — 50-frame contact sheet confirms all 15 scenes (S1–S14 including S12b LayoutL), Palo Alto NGFW camera zoom/pan walkthrough (S7–S12) with Spotlights, RedEllipses, animated dashed flow paths, and outside-camera NoteCards`
+- التغطية النصية (`check_coverage.ts V3`): `V3: OK` (100% من نصوص الشرائح 5 و6).
+- الصوت (`master_audio.py`): `I: -22.0 LUFS`, `Peak: <= -3 dBTP`.
+- المدة: `99.0s` (`2376` فريم @ `24fps`، `1920x1080`).
