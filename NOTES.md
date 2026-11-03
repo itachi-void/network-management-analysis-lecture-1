@@ -75,3 +75,11 @@
 - التغطية النصية (`check_coverage.ts V3`): `V3: OK` (100% من نصوص الشرائح 5 و6).
 - الصوت (`master_audio.py`): `I: -22.0 LUFS`, `Peak: <= -3 dBTP`.
 - المدة: `99.0s` (`2376` فريم @ `24fps`، `1920x1080`).
+
+
+## المرحلة 4 — V4 (04_Multimedia_Network_Application.mp4)
+[VISUAL] V4_card.png: Slide 7 & Slide 16 verbatim text verified, static highlights on audio or video and compression formats, 6 key terms in right column, zero overlaps
+[VISUAL] V4_sheet.png: 72 frames (1 fps) inspected across S1–S10 (incl. S8b links, S9 study card, S10 finale), s07_multimedia_devices and s16_video_player_clean rendered clearly with zero Activate Windows watermark
+- Coverage: `V4: OK` (`ALL 100% COVERED`)
+- Audio Mastering: `-22.0 LUFS`, True Peak `-5.9 dBFS`
+- Duration: `72.0s` (`1728` frames @ `24fps`, `1920x1080`)
