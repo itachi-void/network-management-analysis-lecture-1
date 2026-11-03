@@ -107,3 +107,30 @@
 - Coverage: `V7: OK` (`ALL 100% COVERED`)
 - Audio Mastering: `-22.0 LUFS`, True Peak `-6.4 dBFS`
 - Duration: `75.0s` (`1800` frames @ `24fps`, `1920x1080`)
+
+
+## المرحلة 8 — V8 (08_SDN.mp4)
+[VISUAL] V8_card.png: Slides 14 & 15 verbatim text verified, static highlights on centralized management and through software, s15_traditional_vs_sdn embedded diagram with (رسمة الشريحة), 7 key terms in right column, zero overlaps
+[VISUAL] V8_sheet.png: 86 frames (1 fps) inspected across S1–S12 (incl. s14_network_3d + 10 legend rows in S2, Vector Slide 15 comparison in S4–S8, s15_traditional_vs_sdn in S9, S10b links without NextChip, S11 study card, S12 grand finale with 7 Agenda checkboxes + O6 & K5), zero overlaps
+- Coverage: `V8: OK` (`ALL 100% COVERED`)
+- Audio Mastering: `-22.0 LUFS`, True Peak `-6.3 dBFS`
+- Duration: `85.5s` (`2052` frames @ `24fps`, `1920x1080`)
+
+
+## المرحلة 9 — التحقق النهائي والتسليم (Final Verification & Delivery)
+[VISUAL] V1_card.png → V8_card.png: All 8 study cards visually inspected and compared against Appendix A verbatim text. Zero overlaps, zero truncated text, all formulas, terms, and slide badges verified.
+[VISUAL] V1_sheet.png → V8_sheet.png: Contact sheets for all 8 videos inspected across all 90 scenes. Paper background stable without flicker, zero emoji, zero Activate Windows watermarks, characters consistent across all 13 poses, all original photos rendered sharp on white backgrounds without stretching or pixelation.
+- Verification Suites:
+  - `python scripts/verify_phase0.py`: `PHASE 0: ALL PASS` (all assets, sfx, fonts, bidi, characters, notes)
+  - `npx tsx scripts/check_coverage.ts all`: `ALL 100% COVERED` (V1–V8 verbatim text coverage 100%)
+  - `python scripts/verify_phase9.py`: `PHASE 9 VERIFICATION: ALL PASS`:
+    - V1 (01_Course_Overview_Agenda.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=53.01s (target=53.0s) | I: -22.0 LUFS | Peak: -6.1 dBFS | 5.80 MB`
+    - V2 (02_Datacenter.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=77.00s (target=77.0s) | I: -22.0 LUFS | Peak: -5.8 dBFS | 7.38 MB`
+    - V3 (03_Desktop_Service_Virtualization.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=99.01s (target=99.0s) | I: -22.0 LUFS | Peak: -5.8 dBFS | 15.18 MB`
+    - V4 (04_Multimedia_Network_Application.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=72.00s (target=72.0s) | I: -22.0 LUFS | Peak: -5.8 dBFS | 7.73 MB`
+    - V5 (05_Network_Management.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=54.51s (target=54.5s) | I: -21.9 LUFS | Peak: -5.8 dBFS | 5.77 MB`
+    - V6 (06_Firewall.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=80.51s (target=80.5s) | I: -21.9 LUFS | Peak: -5.4 dBFS | 8.21 MB`
+    - V7 (07_SAN_NAS_Storage_Networks.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=75.01s (target=75.0s) | I: -22.0 LUFS | Peak: -6.4 dBFS | 9.20 MB`
+    - V8 (08_SDN.mp4): `h264 1920x1080 @ 24fps | aac 48kHz 2ch | dur=85.50s (target=85.5s) | I: -22.0 LUFS | Peak: -6.3 dBFS | 9.73 MB`
+- Total Duration: 596.54s (9m 56.5s) vs 596.5s target (error ≤ 0.04s)
+- Delivery: All 8 final videos released on GitHub Releases tag `lecture1` and committed to repository.

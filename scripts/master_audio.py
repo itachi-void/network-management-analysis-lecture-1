@@ -36,7 +36,7 @@ def main():
     cmd_pass2 = [
         "ffmpeg", "-y", "-v", "error", "-i", in_file, "-c:v", "copy",
         "-af", f"{pre},loudnorm=I=-22:TP=-3:LRA=11:measured_I={input_i}:measured_TP={input_tp}:measured_LRA={input_lra}:measured_thresh={input_thresh}:offset={target_offset}:linear=true,aresample=48000",
-        "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2",
+        "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2", "-shortest",
         out_file
     ]
     res2 = subprocess.run(cmd_pass2, capture_output=True, text=True, encoding="utf-8", errors="ignore")
