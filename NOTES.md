@@ -91,3 +91,11 @@
 - Coverage: `V5: OK` (`ALL 100% COVERED`)
 - Audio Mastering: `-22.0 LUFS`, True Peak `-5.8 dBFS`
 - Duration: `54.5s` (`1308` frames @ `24fps`, `1920x1080`)
+
+
+## المرحلة 6 — V6 (06_Firewall.mp4)
+[VISUAL] V6_card.png: Slide 9 & Slide 10 verbatim text verified, SVG ♦ diamond rendered in Figure 8.33 caption, static highlights on network security system, analyzing data packets, and external threats, 8 key terms in right column, zero overlaps
+[VISUAL] V6_sheet.png: 81 frames (1 fps) inspected across S1–S11 (incl. Vector Figure 8.33 in S7–S8, s10_fig8_33_clean.png in S9, S9b links, S10 study card, S11 finale with hacker_H2 behind glass plane), zero Activate Windows watermark, zero overlaps
+- Coverage: `V6: OK` (`ALL 100% COVERED`)
+- Audio Mastering: `-21.9 LUFS`, True Peak `-5.4 dBFS`
+- Duration: `80.5s` (`1932` frames @ `24fps`, `1920x1080`)
