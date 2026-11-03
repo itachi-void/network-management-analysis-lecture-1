@@ -619,14 +619,24 @@ export const IconPressVise: React.FC<IconProps> = ({size = 120, style}) => {
 };
 
 // 38. packet_cube
-export const IconPacketCube: React.FC<IconProps> = ({size = 120, style}) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" style={style}>
-    {/* 3D isometric cube */}
-    <polygon points="60,16 102,40 60,64 18,40" fill={COLORS.BLUE_LIGHT} stroke={COLORS.INK} strokeWidth={4} strokeLinejoin="round" />
-    <polygon points="18,40 60,64 60,106 18,82" fill="#9ED3EC" stroke={COLORS.INK} strokeWidth={4} strokeLinejoin="round" />
-    <polygon points="102,40 60,64 60,106 102,82" fill="#59AFD8" stroke={COLORS.INK} strokeWidth={4} strokeLinejoin="round" />
-  </svg>
-);
+export const IconPacketCube: React.FC<IconProps & {variant?: 'safe' | 'malicious'}> = ({
+  size = 120,
+  style,
+  variant = 'safe',
+}) => {
+  const isMal = variant === 'malicious';
+  const topFill = isMal ? '#FF5E65' : COLORS.BLUE_LIGHT;
+  const leftFill = isMal ? COLORS.SDN_RED : '#9ED3EC';
+  const rightFill = isMal ? COLORS.SDN_RED_SIDE : '#59AFD8';
+  return (
+    <svg width={size} height={size} viewBox="0 0 120 120" style={style}>
+      {/* 3D isometric cube */}
+      <polygon points="60,16 102,40 60,64 18,40" fill={topFill} stroke={COLORS.INK} strokeWidth={4} strokeLinejoin="round" />
+      <polygon points="18,40 60,64 60,106 18,82" fill={leftFill} stroke={COLORS.INK} strokeWidth={4} strokeLinejoin="round" />
+      <polygon points="102,40 60,64 60,106 102,82" fill={rightFill} stroke={COLORS.INK} strokeWidth={4} strokeLinejoin="round" />
+    </svg>
+  );
+};
 
 // 39. warning_triangle (WARN + «!» INK)
 export const IconWarningTriangle: React.FC<IconProps> = ({size = 120, style}) => (

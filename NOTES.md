@@ -83,3 +83,11 @@
 - Coverage: `V4: OK` (`ALL 100% COVERED`)
 - Audio Mastering: `-22.0 LUFS`, True Peak `-5.9 dBFS`
 - Duration: `72.0s` (`1728` frames @ `24fps`, `1920x1080`)
+
+
+## المرحلة 5 — V5 (05_Network_Management.mp4)
+[VISUAL] V5_card.png: Slide 8 verbatim text verified, static highlights on administering, managing, and maintaining, performance, availability, and security, and tools and techniques, 7 key terms in right column, zero overlaps
+[VISUAL] V5_sheet.png: 55 frames (1 fps) inspected across S1–S7 (incl. S5b links + bottom note, S6 study card, S7 finale), s08_rack_servers banner and callouts rendered clearly, zero overlaps
+- Coverage: `V5: OK` (`ALL 100% COVERED`)
+- Audio Mastering: `-22.0 LUFS`, True Peak `-5.8 dBFS`
+- Duration: `54.5s` (`1308` frames @ `24fps`, `1920x1080`)
