@@ -61,3 +61,10 @@
 - التغطية النصية (`check_coverage.ts V1`): `V1: OK` (100% من نصوص الشرائح 1 و2 و3).
 - الصوت (`master_audio.py`): `I: -22.0 LUFS`, `Peak: -6.1 dBFS` (ضمن النطاق `-22 LUFS ±0.5` و`<= -3 dBTP`).
 - المدة: `53.0s` (`1272` فريم @ `24fps`، `1920x1080`).
+
+## المرحلة 2 — الفيديو 2 (V2: 02_Datacenter.mp4): ✔
+- `[VISUAL] out/debug/V2_card.png — PASS — StudyCard displays Slide 4 Datacenter diagram on left and all 10 glossary items on right with clean spacing`
+- `[VISUAL] out/debug/V2_sheet.png — PASS — 39-frame contact sheet confirms all 12 scenes (S1–S11 including S9b LayoutL), vector Datacenter build (S3–S8), ESXi zoom with 6 VMs, original Slide 4 diagram with 4 red brackets, and LayoutL crops`
+- التغطية النصية (`check_coverage.ts V2`): `V2: OK` (100% من نصوص الشريحة 4).
+- الصوت (`master_audio.py`): `I: -22.0 LUFS`, `Peak: -5.8 dBFS` (ضمن النطاق `-22 LUFS ±0.5` و`<= -3 dBTP`).
+- المدة: `77.0s` (`1848` فريم @ `24fps`، `1920x1080`).

@@ -191,7 +191,6 @@ export const HandUnderline: React.FC<{
   strokeWidth = 6,
 }) => {
   const frame = useCurrentFrame();
-  if (frame < startFrame) return null;
   const rel = Math.max(0, frame - startFrame);
   const p = interpolate(rel, [0, Math.max(1, durationFrames)], [0, 1], {
     extrapolateLeft: 'clamp',
@@ -207,6 +206,7 @@ export const HandUnderline: React.FC<{
     return `M ${startX} ${y} Q ${midX} ${bowY.toFixed(1)} ${endX} ${y}`;
   }, [x1, x2, y, rtl]);
 
+  if (frame < startFrame) return null;
   const evolved = evolvePath(p, pathD);
 
   return (
@@ -234,7 +234,6 @@ export const RedEllipse: React.FC<{
   durationFrames?: number;
 }> = ({cx, cy, rx, ry, startFrame = 0, durationFrames = 14}) => {
   const frame = useCurrentFrame();
-  if (frame < startFrame) return null;
   const rel = Math.max(0, frame - startFrame);
   const p = interpolate(rel, [0, Math.max(1, durationFrames)], [0, 1], {
     extrapolateLeft: 'clamp',
@@ -259,6 +258,7 @@ export const RedEllipse: React.FC<{
     return points.join(' ');
   }, [cx, cy, rx, ry]);
 
+  if (frame < startFrame) return null;
   const evolved = evolvePath(p, pathD);
 
   return (
@@ -493,8 +493,7 @@ export const Arrow: React.FC<{
   bow = 12,
 }) => {
   const frame = useCurrentFrame();
-  if (frame < startFrame) return null;
-  const rel = frame - startFrame;
+  const rel = Math.max(0, frame - startFrame);
   const p = interpolate(rel, [0, Math.max(1, durationFrames)], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -524,6 +523,7 @@ export const Arrow: React.FC<{
     return {lineD: lD, headD: hD};
   }, [x1, y1, x2, y2, bow]);
 
+  if (frame < startFrame) return null;
   const evolved = evolvePath(p, lineD);
 
   return (
@@ -562,8 +562,7 @@ export const NameOval: React.FC<{
   seed?: number;
 }> = ({name, cx, cy, rx = 145, ry = 46, startFrame = 0, seed = 77}) => {
   const frame = useCurrentFrame();
-  if (frame < startFrame) return null;
-  const rel = frame - startFrame;
+  const rel = Math.max(0, frame - startFrame);
   const drawFrames = 8; // 0.35s
   const p = Math.min(1, rel / drawFrames);
   const textOpacity = Math.min(1, Math.max(0, (rel - 4) / 4)); // 0.15s fade
@@ -581,6 +580,7 @@ export const NameOval: React.FC<{
     return gen.toPaths(d)[0]?.d || '';
   }, [cx, cy, rx, ry, seed]);
 
+  if (frame < startFrame) return null;
   const evolved = evolvePath(p, ovalD);
 
   return (
