@@ -1,18 +1,16 @@
 // src/compositions/CalScene.tsx
 import React, {useMemo} from 'react';
-import {useCurrentFrame, useVideoConfig} from 'remotion';
+import {useCurrentFrame} from 'remotion';
 import rough from 'roughjs';
 import {
   Paper,
   SketchBox,
   CheckMark,
-  WordReveal,
-  HighlightText,
   Caption,
   Character,
   SceneFade,
 } from '../components';
-import {COLORS, FONTS} from '../theme';
+import {COLORS} from '../theme';
 import {FONT_FAMILIES} from '../lib/fonts';
 import {Sfx} from '../lib/sfx';
 
@@ -70,30 +68,31 @@ const Sparkle: React.FC<{cx: number; cy: number; startFrame: number}> = ({
 export const CalScene: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Reference timing (seconds to frames at 24 fps):
-  // 0.00 -> frame 0
-  // 0.10 -> frame 2, 0.60 -> frame 14
-  // 0.40 -> frame 10 (Omar enters)
-  // 0.55 -> frame 13, 1.05 -> frame 25 (Title WordReveal)
-  // 1.05 -> frame 25, 1.25 -> frame 30 (Underline)
-  // 1.15 -> frame 28 (Check 1)
-  // 1.30 -> frame 31, 1.70 -> frame 41 (Item 1 text)
-  // 2.05 -> frame 49, 2.35 -> frame 56 (Highlight 1)
-  // 2.45 -> frame 59 (Check 2)
-  // 2.60 -> frame 62, 3.10 -> frame 74 (Item 2 text)
-  // 3.20 -> frame 77, 3.50 -> frame 84 (Highlight 2)
-  // 3.75 -> frame 90 (Check 3)
-  // 3.90 -> frame 94, 4.35 -> frame 104 (Item 3 text)
-  // 4.05 -> frame 97 (Sparkle)
-  // 4.35 -> frame 104, 4.65 -> frame 112 (Highlight 3)
-  // 4.82 -> frame 116, 5.15 -> frame 124 (Fade)
+  // Reference timing (from Section 0.6 table at 24 fps):
+  // 0.00 -> frame 0: whoosh_soft
+  // 0.12 - 0.75 -> frames 3 to 18: Card draw (pencil_loop 0.63s)
+  // 0.33 -> frame 8: Omar enters
+  // 0.50 -> frame 12: Caption appears
+  // 0.62 - 0.82 -> frames 15 to 20: Title HandWrite (pencil_loop 0.20s, -3dB)
+  // 0.86 - 1.06 -> frames 21 to 25: Underline (pencil_loop 0.20s, -6dB)
+  // 1.21 - 1.40 -> frames 29 to 34: Item 1 HandWrite (pencil_loop 0.19s, -3dB)
+  // 1.46 -> frame 35: Check 1 (check_soft)
+  // 1.75 - 2.08 -> frames 42 to 50: Highlight 1 (highlight_swipe)
+  // 2.46 - 2.68 -> frames 59 to 64: Item 2 HandWrite (pencil_loop 0.22s, -3dB)
+  // 2.71 -> frame 65: Check 2 (check_soft)
+  // 3.00 - 3.30 -> frames 72 to 79: Highlight 2 (highlight_swipe)
+  // 3.71 - 3.92 -> frames 89 to 94: Item 3 HandWrite (pencil_loop 0.21s, -3dB)
+  // 3.96 -> frame 95: Check 3 (check_soft)
+  // 4.05 -> frame 97: Sparkle at Omar's head
+  // 4.25 - 4.55 -> frames 102 to 109: Highlight 3 (highlight_swipe)
+  // 4.82 - 5.15 -> frames 116 to 124: Fade
 
-  // Title underline rough path
+  // Underline rough path from x=185 to 1105 at y=298 (seed fixed)
   const lineD = useMemo(() => {
     const gen = rough.generator();
-    const l = gen.line(185, 297, 1105, 297, {
+    const l = gen.line(185, 298, 1105, 298, {
       seed: 88,
-      roughness: 0.7,
+      roughness: 0.6,
       bowing: 0.5,
       stroke: COLORS.INK,
       strokeWidth: 3,
@@ -101,63 +100,78 @@ export const CalScene: React.FC = () => {
     return gen.toPaths(l)[0]?.d || '';
   }, []);
 
-  const lineProgress = Math.min(1, Math.max(0, (frame - 25) / 5));
+  // Title underline progress (frames 21 to 25)
+  const lineProgress = Math.min(1, Math.max(0, (frame - 21) / 4));
+
+  // Item 1: HandWrite (29 to 34), Highlight (42 to 50), Check (35)
+  const item1WriteProgress = Math.min(1, Math.max(0, (frame - 29) / 5));
+  const item1HlProgress = Math.min(1, Math.max(0, (frame - 42) / 8));
+
+  // Item 2: HandWrite (59 to 64), Highlight (72 to 79), Check (65)
+  const item2WriteProgress = Math.min(1, Math.max(0, (frame - 59) / 5));
+  const item2HlProgress = Math.min(1, Math.max(0, (frame - 72) / 7));
+
+  // Item 3: HandWrite (89 to 94), Highlight (102 to 109), Check (95)
+  const item3WriteProgress = Math.min(1, Math.max(0, (frame - 89) / 5));
+  const item3HlProgress = Math.min(1, Math.max(0, (frame - 102) / 7));
+
+  // Title reveal progress (frames 15 to 20)
+  const titleWriteProgress = Math.min(1, Math.max(0, (frame - 15) / 5));
 
   return (
     <div style={{width: 1920, height: 1080, position: 'relative', overflow: 'hidden'}}>
       {/* 1. Paper Background */}
       <Paper />
 
-      {/* Audio SFX */}
-      <Sfx name="whoosh_soft" at={0.0} />
-      <Sfx name="pencil_loop" at={0.1} dur={0.5} />
-      <Sfx name="pencil_loop" at={0.55} dur={0.5} gainDb={-3} />
-      <Sfx name="check_soft" at={1.15} />
-      <Sfx name="pencil_loop" at={1.3} dur={0.4} gainDb={-3} />
-      <Sfx name="highlight_swipe" at={2.05} />
-      <Sfx name="check_soft" at={2.45} />
-      <Sfx name="pencil_loop" at={2.6} dur={0.5} gainDb={-3} />
-      <Sfx name="highlight_swipe" at={3.2} />
-      <Sfx name="check_soft" at={3.75} />
-      <Sfx name="pencil_loop" at={3.9} dur={0.45} gainDb={-3} />
-      <Sfx name="highlight_swipe" at={4.35} />
+      {/* 2. Audio SFX - Strict Timeline Object Mapping */}
+      <Sfx name="whoosh_soft" at={0.0} dur={0.45} />
+      <Sfx name="pencil_loop" at={0.12} dur={0.63} />
+      <Sfx name="pencil_loop" at={0.62} dur={0.20} gainDb={-3} />
+      <Sfx name="pencil_loop" at={0.86} dur={0.20} gainDb={-6} />
+      <Sfx name="pencil_loop" at={1.21} dur={0.19} gainDb={-3} />
+      <Sfx name="check_soft" at={1.46} />
+      <Sfx name="highlight_swipe" at={1.75} dur={0.33} />
+      <Sfx name="pencil_loop" at={2.46} dur={0.22} gainDb={-3} />
+      <Sfx name="check_soft" at={2.71} />
+      <Sfx name="highlight_swipe" at={3.00} dur={0.30} />
+      <Sfx name="pencil_loop" at={3.71} dur={0.21} gainDb={-3} />
+      <Sfx name="check_soft" at={3.96} />
+      <Sfx name="highlight_swipe" at={4.25} dur={0.30} />
 
-      {/* 2. SketchBox Card: x: 92 -> 1194 (w: 1102), y: 135 -> 918 (h: 783) */}
+      {/* 3. SketchBox Card: x: 105 -> 1182 (w: 1077), y: 144 -> 917 (h: 773) */}
       <SketchBox
-        x={92}
-        y={135}
-        w={1102}
-        h={783}
-        startFrame={2}
-        drawDurationFrames={12}
+        x={105}
+        y={144}
+        w={1077}
+        h={773}
+        startFrame={3}
+        drawDurationFrames={15}
         seed={42}
       />
 
-      {/* 3. Title: "إزاي نحمي السرّية؟" at center (645, 245) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: 92,
-          top: 215,
-          width: 1102,
-          textAlign: 'center',
-          fontFamily: FONT_FAMILIES.BODY,
-          fontWeight: 700,
-          fontSize: 54,
-          color: COLORS.INK,
-          zIndex: 10,
-        }}
-      >
-        <WordReveal
-          text="إزاي نحمي السرّية؟"
-          startFrame={13}
-          durationFrames={12}
-          rtl={true}
-        />
-      </div>
+      {/* 4. Title: «إزاي نحمي السرّية؟» (Cairo 700, 65px) center (644, 250) */}
+      {frame >= 15 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 644,
+            top: 250,
+            transform: 'translate(-50%, -50%)',
+            fontFamily: FONT_FAMILIES.BODY,
+            fontWeight: 700,
+            fontSize: 65,
+            color: COLORS.INK,
+            whiteSpace: 'nowrap',
+            zIndex: 10,
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - titleWriteProgress) * 100)}%)`,
+          }}
+        >
+          إزاي نحمي السرّية؟
+        </div>
+      )}
 
-      {/* Line under title: x: 185 -> 1105 at y: 297 */}
-      {frame >= 25 && (
+      {/* Line under title: x: 185 -> 1105 at y: 298 */}
+      {frame >= 21 && (
         <svg
           style={{
             position: 'absolute',
@@ -174,130 +188,156 @@ export const CalScene: React.FC = () => {
             fill="none"
             stroke={COLORS.INK}
             strokeWidth={3}
-            strokeDasharray={1000}
-            strokeDashoffset={1000 * (1 - lineProgress)}
+            strokeDasharray={920}
+            strokeDashoffset={920 * (1 - lineProgress)}
           />
         </svg>
       )}
 
-      {/* 4. Three items right-aligned at x=1010, centers y=440, 615, 790 */}
-      {/* Item 1 */}
-      {frame >= 28 && <CheckMark x={1070} y={440} startFrame={28} />}
-      <div
-        style={{
-          position: 'absolute',
-          right: 1920 - 1010,
-          top: 410,
-          fontFamily: FONT_FAMILIES.BODY,
-          fontWeight: 500,
-          fontSize: 50,
-          color: COLORS.INK,
-          zIndex: 10,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {frame >= 49 ? (
-          <HighlightText
-            text="تشفير البيانات"
-            startFrame={49}
-            durationFrames={7}
-            rtl={true}
-          />
-        ) : (
-          <WordReveal
-            text="تشفير البيانات"
-            startFrame={31}
-            durationFrames={10}
-            rtl={true}
-          />
-        )}
-      </div>
+      {/* 5. Item 1: center (592, 440), check at (1077, 440) */}
+      {/* Check 1 */}
+      {frame >= 35 && <CheckMark x={1077} y={440} startFrame={35} />}
+      {/* Item 1 Highlight */}
+      {item1HlProgress > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 592,
+            top: 440 + 6,
+            width: 293 + 24,
+            height: 64,
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: COLORS.HILITE,
+            zIndex: 9,
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - item1HlProgress) * 100)}%)`,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      {/* Item 1 Text */}
+      {frame >= 29 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 592,
+            top: 440,
+            transform: 'translate(-50%, -50%)',
+            fontFamily: FONT_FAMILIES.BODY,
+            fontWeight: 500,
+            fontSize: 54,
+            color: COLORS.INK,
+            zIndex: 10,
+            whiteSpace: 'nowrap',
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - item1WriteProgress) * 100)}%)`,
+          }}
+        >
+          تشفير البيانات
+        </div>
+      )}
 
-      {/* Item 2 */}
-      {frame >= 59 && <CheckMark x={1070} y={615} startFrame={59} />}
-      <div
-        style={{
-          position: 'absolute',
-          right: 1920 - 1010,
-          top: 585,
-          fontFamily: FONT_FAMILIES.BODY,
-          fontWeight: 500,
-          fontSize: 50,
-          color: COLORS.INK,
-          zIndex: 10,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {frame >= 77 ? (
-          <HighlightText
-            text="كلمة سر قوية وتحقق بخطوتين"
-            startFrame={77}
-            durationFrames={7}
-            rtl={true}
-          />
-        ) : (
-          <WordReveal
-            text="كلمة سر قوية وتحقق بخطوتين"
-            startFrame={62}
-            durationFrames={12}
-            rtl={true}
-          />
-        )}
-      </div>
+      {/* 6. Item 2: center (592, 615), check at (1077, 615) */}
+      {/* Check 2 */}
+      {frame >= 65 && <CheckMark x={1077} y={615} startFrame={65} />}
+      {/* Item 2 Highlight */}
+      {item2HlProgress > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 592,
+            top: 615 + 6,
+            width: 678 + 24,
+            height: 64,
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: COLORS.HILITE,
+            zIndex: 9,
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - item2HlProgress) * 100)}%)`,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      {/* Item 2 Text */}
+      {frame >= 59 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 592,
+            top: 615,
+            transform: 'translate(-50%, -50%)',
+            fontFamily: FONT_FAMILIES.BODY,
+            fontWeight: 500,
+            fontSize: 54,
+            color: COLORS.INK,
+            zIndex: 10,
+            whiteSpace: 'nowrap',
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - item2WriteProgress) * 100)}%)`,
+          }}
+        >
+          كلمة سر قوية وتحقق بخطوتين
+        </div>
+      )}
 
-      {/* Item 3 */}
-      {frame >= 90 && <CheckMark x={1070} y={790} startFrame={90} />}
-      <div
-        style={{
-          position: 'absolute',
-          right: 1920 - 1010,
-          top: 760,
-          fontFamily: FONT_FAMILIES.BODY,
-          fontWeight: 500,
-          fontSize: 50,
-          color: COLORS.INK,
-          zIndex: 10,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {frame >= 104 ? (
-          <HighlightText
-            text="كل واحد يشوف اللي يخصه بس"
-            startFrame={104}
-            durationFrames={8}
-            rtl={true}
-          />
-        ) : (
-          <WordReveal
-            text="كل واحد يشوف اللي يخصه بس"
-            startFrame={94}
-            durationFrames={10}
-            rtl={true}
-          />
-        )}
-      </div>
+      {/* 7. Item 3: center (592, 790), check at (1077, 790) */}
+      {/* Check 3 */}
+      {frame >= 95 && <CheckMark x={1077} y={790} startFrame={95} />}
+      {/* Item 3 Highlight */}
+      {item3HlProgress > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 592,
+            top: 790 + 6,
+            width: 668 + 24,
+            height: 64,
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: COLORS.HILITE,
+            zIndex: 9,
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - item3HlProgress) * 100)}%)`,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      {/* Item 3 Text */}
+      {frame >= 89 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 592,
+            top: 790,
+            transform: 'translate(-50%, -50%)',
+            fontFamily: FONT_FAMILIES.BODY,
+            fontWeight: 500,
+            fontSize: 54,
+            color: COLORS.INK,
+            zIndex: 10,
+            whiteSpace: 'nowrap',
+            clipPath: `inset(0 0 0 ${Math.max(0, (1 - item3WriteProgress) * 100)}%)`,
+          }}
+        >
+          كل واحد يشوف اللي يخصه بس
+        </div>
+      )}
 
-      {/* 5. Character Omar O3 right side: center x=1580, height=800, baseY=1000 */}
+      {/* 8. Character Omar O3 right side: center x=1580, height=800, baseY=1000 */}
       <Character
         src="omar_O3.png"
         x={1580}
         height={800}
         baseY={1000}
-        startFrame={10}
+        startFrame={8}
         side="right"
       />
 
       {/* Sparkle around head at t=4.05 (frame 97) */}
       <Sparkle cx={1580} cy={380} startFrame={97} />
 
-      {/* 6. Caption */}
+      {/* 9. Caption: «تلات خطوات بسيطة... وكل واحد يشوف اللي يخصه بس.» at 45px */}
       <Caption
         text="تلات خطوات بسيطة... وكل واحد يشوف اللي يخصه بس."
-        startFrame={4}
+        startFrame={12}
         fadeOutStartFrame={116}
       />
 
-      {/* 7. SceneFade: frames 116 to 124 */}
+      {/* 10. SceneFade: frames 116 to 124 */}
       <SceneFade startFrame={116} durationFrames={8} />
     </div>
   );

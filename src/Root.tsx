@@ -46,7 +46,7 @@ export const Root: React.FC = () => {
       <Composition
         id="BIDI-1"
         component={BidiView1}
-        durationInFrames={1}
+        durationInFrames={24}
         fps={24}
         width={1920}
         height={1080}
@@ -56,7 +56,7 @@ export const Root: React.FC = () => {
       <Composition
         id="BIDI-2"
         component={BidiView2}
-        durationInFrames={1}
+        durationInFrames={24}
         fps={24}
         width={1920}
         height={1080}

@@ -298,16 +298,12 @@ export const CheckMark: React.FC<{
   const drawFrames = 6;
   const drawProgress = Math.min(1, rel / drawFrames);
 
-  // Bounce 0.15s (scale 1 -> 1.15 -> 1)
+  // Bounce 0.15s (scale 1 -> 1.10 -> 1 in 4 frames)
   let scale = 1;
-  if (rel > drawFrames) {
-    const bounceFrame = rel - drawFrames;
-    scale = spring({
-      frame: bounceFrame,
-      fps,
-      config: {damping: 12, stiffness: 200},
-    });
-    scale = 1 + (scale - 1) * 0.15;
+  const bounceFrames = 4;
+  if (rel > drawFrames && rel <= drawFrames + bounceFrames) {
+    const p = (rel - drawFrames) / bounceFrames;
+    scale = 1 + Math.sin(p * Math.PI) * 0.10;
   }
 
   // Path: M0,38 L26,64 L70,0
@@ -476,7 +472,7 @@ export const Caption: React.FC<{
           textAlign: 'center',
           fontFamily: FONTS.BODY,
           fontWeight: 500,
-          fontSize: 40,
+          fontSize: 45,
           color: COLORS.CAPTION,
           whiteSpace: 'nowrap',
         }}
@@ -619,3 +615,6 @@ export const SvgDiamond: React.FC<{size?: number; color?: string}> = ({
     <polygon points="7,0 14,7 7,14 0,7" fill={color} />
   </svg>
 );
+
+
+export * from './layout_components';

@@ -1,7 +1,7 @@
 // src/lib/bidi.tsx
 import React from 'react';
 
-const RUN = /\(?[A-Za-z0-9][A-Za-z0-9 .,:&/+\-–'’%#=()]*[A-Za-z0-9)%]/g;
+const RUN = /\(?[A-Za-z0-9][A-Za-z0-9 .,:&/+\-\u2013'\u2019%#=()]*[A-Za-z0-9)%]/g;
 
 export function bidiSegments(s: string): {text: string; ltr: boolean}[] {
   const out: {text: string; ltr: boolean}[] = [];
