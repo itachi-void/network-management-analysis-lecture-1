@@ -419,47 +419,118 @@ export const IconShield: React.FC<IconProps> = ({size = 120, style}) => (
   </svg>
 );
 
-// 27. power_clock
-export const IconPowerClock: React.FC<IconProps> = ({size = 120, style}) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" style={style}>
-    <circle cx={60} cy={60} r={46} fill="#FDFBF5" stroke={COLORS.INK} strokeWidth={4} />
-    <line x1={60} y1={60} x2={60} y2={30} stroke={COLORS.INK} strokeWidth={4} strokeLinecap="round" />
-    <line x1={60} y1={60} x2={82} y2={60} stroke={COLORS.INK} strokeWidth={4} strokeLinecap="round" />
-    <circle cx={60} cy={60} r={5} fill={COLORS.GREEN} />
-  </svg>
-);
+// 27. power_clock (ساعة + رمز التشغيل واضح: دايرة مفتوحة من فوق وخط رأسي في النص)
+export const IconPowerClock: React.FC<IconProps> = ({size = 120, style}) => {
+  const sw = size >= 160 ? 5 : 4;
+  return (
+    <svg width={size} height={size} viewBox="0 0 120 120" style={style}>
+      {/* Clock body */}
+      <circle cx={50} cy={52} r={40} fill="#FDFBF5" stroke={COLORS.INK} strokeWidth={sw} />
+      {/* Clock tick marks */}
+      <line x1={50} y1={16} x2={50} y2={22} stroke={COLORS.INK} strokeWidth={3} strokeLinecap="round" />
+      <line x1={50} y1={82} x2={50} y2={88} stroke={COLORS.INK} strokeWidth={3} strokeLinecap="round" />
+      <line x1={14} y1={52} x2={20} y2={52} stroke={COLORS.INK} strokeWidth={3} strokeLinecap="round" />
+      <line x1={80} y1={52} x2={86} y2={52} stroke={COLORS.INK} strokeWidth={3} strokeLinecap="round" />
+      {/* Clock hands */}
+      <line x1={50} y1={52} x2={50} y2={28} stroke={COLORS.INK} strokeWidth={sw} strokeLinecap="round" />
+      <line x1={50} y1={52} x2={70} y2={52} stroke={COLORS.INK} strokeWidth={sw} strokeLinecap="round" />
+      <circle cx={50} cy={52} r={4.5} fill={COLORS.INK} />
+      {/* Power symbol badge (bottom-right): open circle at top + vertical bar */}
+      <circle cx={86} cy={84} r={26} fill={COLORS.GREEN} stroke={COLORS.INK} strokeWidth={sw} />
+      <path
+        d="M 75 74 A 15 15 0 1 0 97 74"
+        fill="none"
+        stroke={COLORS.INK}
+        strokeWidth={sw}
+        strokeLinecap="round"
+      />
+      <line x1={86} y1={65} x2={86} y2={83} stroke={COLORS.INK} strokeWidth={sw + 1} strokeLinecap="round" />
+    </svg>
+  );
+};
 
 // 28. globe
 export const IconGlobe: React.FC<IconProps> = ({size = 120, style}) => (
   <svg width={size} height={size} viewBox="0 0 120 120" style={style}>
-    <circle cx={60} cy={60} r={48} fill={COLORS.BLUE_LIGHT} stroke={COLORS.INK} strokeWidth={4} />
+    <circle cx={60} cy={60} r={48} fill={COLORS.BLUE_LIGHT} stroke={COLORS.INK} strokeWidth={size >= 160 ? 5 : 4} />
     <ellipse cx={60} cy={60} rx={24} ry={48} fill="none" stroke={COLORS.INK} strokeWidth={3} />
     <line x1={12} y1={60} x2={108} y2={60} stroke={COLORS.INK} strokeWidth={3} />
   </svg>
 );
 
-// 29. desk_phone
-export const IconDeskPhone: React.FC<IconProps> = ({size = 120, style}) => (
-  <svg width={size} height={size * 0.8} viewBox="0 0 120 96" style={style}>
-    <RoughRect x={16} y={20} w={88} h={66} fill="#4A4E57" stroke={COLORS.INK} strokeWidth={4} seed={130} />
-    <rect x={24} y={30} width={36} height={24} fill="#DCEAF6" stroke={COLORS.INK} strokeWidth={2} />
-    <circle cx={76} cy={36} r={3} fill="#B8C0C8" />
-    <circle cx={88} cy={36} r={3} fill="#B8C0C8" />
-    <circle cx={76} cy={48} r={3} fill="#B8C0C8" />
-    <circle cx={88} cy={48} r={3} fill="#B8C0C8" />
-    <path d="M8,28 Q18,12 36,12 L44,22 L36,36 L24,32 Z" fill="#2A2723" stroke={COLORS.INK} strokeWidth={3} />
-  </svg>
-);
+// 29. desk_phone (سماعة بسلك على قاعدة فيها أزرار)
+export const IconDeskPhone: React.FC<IconProps> = ({size = 120, style}) => {
+  const sw = size >= 160 ? 5 : 4;
+  return (
+    <svg width={size} height={size * 0.9} viewBox="0 0 120 108" style={style}>
+      {/* Phone base */}
+      <RoughRect x={24} y={22} w={84} h={68} fill="#4A4E57" stroke={COLORS.INK} strokeWidth={sw} seed={130} />
+      {/* Small LCD display */}
+      <rect x={54} y={30} width={44} height={14} rx={2} fill="#DCEAF6" stroke={COLORS.INK} strokeWidth={2} />
+      {/* 3x3 Keypad buttons */}
+      {[0, 1, 2].map((r) =>
+        [0, 1, 2].map((c) => (
+          <rect
+            key={`${r}-${c}`}
+            x={58 + c * 13}
+            y={50 + r * 11}
+            width={9}
+            height={7}
+            rx={1.5}
+            fill="#FDFBF5"
+            stroke={COLORS.INK}
+            strokeWidth={1.5}
+          />
+        ))
+      )}
+      {/* Handset on left side of base */}
+      <path
+        d="M 22 16 C 14 16 12 28 16 34 L 20 38 L 20 66 L 16 70 C 12 76 14 88 22 88 L 38 88 C 42 88 44 80 40 74 L 34 68 L 34 36 L 40 30 C 44 24 42 16 38 16 Z"
+        fill="#2A2723"
+        stroke={COLORS.INK}
+        strokeWidth={sw}
+        strokeLinejoin="round"
+      />
+      {/* Coiled cord connecting handset to base */}
+      <path
+        d="M 26 88 C 20 98 30 104 34 96 C 32 104 42 104 44 96 C 44 104 54 102 54 90"
+        fill="none"
+        stroke={COLORS.INK}
+        strokeWidth={3.5}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
 
-// 30. video_phone
-export const IconVideoPhone: React.FC<IconProps> = ({size = 120, style}) => (
-  <svg width={size} height={size * 0.9} viewBox="0 0 120 108" style={style}>
-    <RoughRect x={14} y={30} w={92} h={68} fill="#4A4E57" stroke={COLORS.INK} strokeWidth={4} seed={131} />
-    <rect x={24} y={40} width={48} height={40} fill="#DCEAF6" stroke={COLORS.INK} strokeWidth={2} />
-    <circle cx={48} cy={16} r={8} fill="#2A2723" stroke={COLORS.INK} strokeWidth={2} />
-    <rect x={44} y={24} width={8} height={6} fill="#7A8088" />
-  </svg>
-);
+// 30. video_phone (تليفون مكتب بشاشة فيها وش)
+export const IconVideoPhone: React.FC<IconProps> = ({size = 120, style}) => {
+  const sw = size >= 160 ? 5 : 4;
+  return (
+    <svg width={size} height={size * 0.95} viewBox="0 0 120 114" style={style}>
+      {/* Phone base */}
+      <RoughRect x={14} y={24} w={96} h={76} fill="#4A4E57" stroke={COLORS.INK} strokeWidth={sw} seed={131} />
+      {/* Camera on top */}
+      <rect x={54} y={10} width={20} height={14} rx={4} fill="#2A2723" stroke={COLORS.INK} strokeWidth={2.5} />
+      <circle cx={64} cy={17} r={4} fill={COLORS.BLUE_LIGHT} />
+      {/* Handset on left */}
+      <rect x={18} y={28} width={16} height={68} rx={6} fill="#2A2723" stroke={COLORS.INK} strokeWidth={3} />
+      {/* Video screen with a clear face inside */}
+      <rect x={40} y={32} width={50} height={46} rx={4} fill="#DCEAF6" stroke={COLORS.INK} strokeWidth={3} />
+      {/* Shoulders in screen */}
+      <path d="M 48 78 C 48 66 82 66 82 78 Z" fill={COLORS.NAVY} stroke={COLORS.INK} strokeWidth={2.5} />
+      {/* Head/Face in screen */}
+      <circle cx={65} cy={51} r={12} fill="#F5CD63" stroke={COLORS.INK} strokeWidth={2.5} />
+      <circle cx={61} cy={49} r={2} fill={COLORS.INK} />
+      <circle cx={69} cy={49} r={2} fill={COLORS.INK} />
+      <path d="M 60 55 Q 65 60 70 55" fill="none" stroke={COLORS.INK} strokeWidth={2.2} strokeLinecap="round" />
+      {/* Keypad buttons on right */}
+      {[0, 1, 2].map((r) => (
+        <rect key={r} x={95} y={36 + r * 13} width={9} height={8} rx={1.5} fill="#FDFBF5" stroke={COLORS.INK} strokeWidth={1.5} />
+      ))}
+    </svg>
+  );
+};
 
 // 31. speaker_waves
 export const IconSpeakerWaves: React.FC<IconProps> = ({size = 120, style}) => (
@@ -516,15 +587,36 @@ export const IconSmallFile: React.FC<IconProps> = ({size = 120, style}) => (
   </svg>
 );
 
-// 37. press_vise
-export const IconPressVise: React.FC<IconProps> = ({size = 120, style}) => (
-  <svg width={size} height={size * 0.8} viewBox="0 0 120 96" style={style}>
-    <RoughRect x={10} y={16} w={100} h={16} fill="#7A8088" stroke={COLORS.INK} strokeWidth={4} seed={136} />
-    <RoughRect x={10} y={64} w={100} h={16} fill="#7A8088" stroke={COLORS.INK} strokeWidth={4} seed={137} />
-    <line x1={60} y1={32} x2={60} y2={64} stroke={COLORS.INK} strokeWidth={6} />
-    <path d="M50,44 L70,44 M50,52 L70,52" stroke={COLORS.INK} strokeWidth={3} />
-  </svg>
-);
+// 37. press_vise (لوحين بينهم ملف بيتضغط + سهمين لجوه)
+export const IconPressVise: React.FC<IconProps> = ({size = 120, style}) => {
+  const sw = size >= 160 ? 5 : 4;
+  return (
+    <svg width={size} height={size * 0.9} viewBox="0 0 120 108" style={style}>
+      {/* Top inward arrow pointing down */}
+      <line x1={60} y1={2} x2={60} y2={22} stroke={COLORS.RED} strokeWidth={sw + 1} strokeLinecap="round" />
+      <polyline points="50,14 60,24 70,14" fill="none" stroke={COLORS.RED} strokeWidth={sw + 1} strokeLinecap="round" strokeLinejoin="round" />
+      {/* Top press plate */}
+      <RoughRect x={14} y={26} w={92} h={14} fill="#7A8088" stroke={COLORS.INK} strokeWidth={sw} seed={136} />
+      {/* Squished file between plates */}
+      <path
+        d="M 34 40 Q 26 54 34 68 L 86 68 Q 94 54 86 40 Z"
+        fill={COLORS.HILITE}
+        stroke={COLORS.INK}
+        strokeWidth={sw - 0.5}
+        strokeLinejoin="round"
+      />
+      {/* File lines inside squished file */}
+      <line x1={42} y1={49} x2={78} y2={49} stroke={COLORS.INK} strokeWidth={2.5} strokeLinecap="round" />
+      <line x1={40} y1={56} x2={80} y2={56} stroke={COLORS.INK} strokeWidth={2.5} strokeLinecap="round" />
+      <line x1={44} y1={62} x2={72} y2={62} stroke={COLORS.INK} strokeWidth={2.5} strokeLinecap="round" />
+      {/* Bottom press plate */}
+      <RoughRect x={14} y={68} w={92} h={14} fill="#7A8088" stroke={COLORS.INK} strokeWidth={sw} seed={137} />
+      {/* Bottom inward arrow pointing up */}
+      <line x1={60} y1={106} x2={60} y2={86} stroke={COLORS.RED} strokeWidth={sw + 1} strokeLinecap="round" />
+      <polyline points="50,94 60,84 70,94" fill="none" stroke={COLORS.RED} strokeWidth={sw + 1} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+};
 
 // 38. packet_cube
 export const IconPacketCube: React.FC<IconProps> = ({size = 120, style}) => (

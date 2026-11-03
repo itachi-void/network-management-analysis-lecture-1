@@ -1,9 +1,9 @@
 // src/components/layout_components.tsx
-import React, {useMemo} from 'react';
+import React from 'react';
 import {useCurrentFrame, staticFile} from 'remotion';
 import {COLORS, FONTS} from '../theme';
 import {FONT_FAMILIES} from '../lib/fonts';
-import {SketchBox, SvgDiamond} from './index';
+import {SketchBox, Arrow, HandWrite} from './index';
 
 // 1. AgendaChip (Section 5.4 & 5.8: Top-left topic chip for S1 of V2..V8)
 export const AgendaChip: React.FC<{
@@ -75,13 +75,8 @@ export const SlideCrop: React.FC<{
   height: number;
   style?: React.CSSProperties;
 }> = ({src, region, width, height, style}) => {
-  const regW = Math.max(0.001, (region.x1 - region.x0) / 100);
-  const regH = Math.max(0.001, (region.y1 - region.y0) / 100);
-
-  const imgW = width / regW;
-  const imgH = height / regH;
-  const offsetX = -(region.x0 / 100) * imgW;
-  const offsetY = -(region.y0 / 100) * imgH;
+  const regW = Math.max(0.01, (region.x1 - region.x0) / 100);
+  const regH = Math.max(0.01, (region.y1 - region.y0) / 100);
 
   return (
     <div
@@ -94,21 +89,33 @@ export const SlideCrop: React.FC<{
         overflow: 'hidden',
         position: 'relative',
         boxSizing: 'border-box',
+        flexShrink: 0,
         ...style,
       }}
     >
-      <img
-        src={staticFile(src)}
-        alt="Crop"
+      <div
         style={{
-          position: 'absolute',
-          left: offsetX,
-          top: offsetY,
-          width: imgW,
-          height: imgH,
-          objectFit: 'contain',
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          overflow: 'hidden',
         }}
-      />
+      >
+        <img
+          src={staticFile(src)}
+          alt="Crop"
+          style={{
+            position: 'absolute',
+            left: `${(-region.x0 / 100 / regW) * 100}%`,
+            top: `${(-region.y0 / 100 / regH) * 100}%`,
+            width: `${(1 / regW) * 100}%`,
+            height: `${(1 / regH) * 100}%`,
+            maxWidth: 'none',
+            maxHeight: 'none',
+            display: 'block',
+          }}
+        />
+      </div>
     </div>
   );
 };
@@ -215,14 +222,15 @@ export const LinkNode: React.FC<{
       }}
     >
       <SketchBox x={0} y={0} w={w} h={h} seed={seed} startFrame={0} drawDurationFrames={8}>
-        <div style={{padding: '16px 20px', display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box'}}>
+        <div style={{padding: '14px 20px', display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box'}}>
           {/* Direction */}
           <div
             dir="rtl"
             style={{
               fontFamily: FONTS.BODY,
               fontWeight: 600,
-              fontSize: 24,
+              fontSize: 23,
+              lineHeight: 1.2,
               color: COLORS.MUTED,
               marginBottom: 4,
             }}
@@ -236,12 +244,11 @@ export const LinkNode: React.FC<{
             style={{
               fontFamily: FONTS.EN_TITLE,
               fontWeight: 700,
-              fontSize: 28,
+              fontSize: 27,
+              lineHeight: 1.2,
               color: COLORS.INK,
-              marginBottom: 10,
+              marginBottom: 8,
               whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
             }}
           >
             {topicTitle}
@@ -254,11 +261,11 @@ export const LinkNode: React.FC<{
                 src={crop.src}
                 region={crop.region}
                 width={w > 600 ? 240 : 200}
-                height={w > 600 ? 150 : 130}
+                height={w > 600 ? 136 : 124}
               />
             )}
             {icon && (
-              <div style={{width: 120, height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <div style={{width: 120, height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
                 {icon}
               </div>
             )}
@@ -268,8 +275,8 @@ export const LinkNode: React.FC<{
                 flex: 1,
                 fontFamily: FONTS.BODY,
                 fontWeight: 500,
-                fontSize: 26,
-                lineHeight: 1.45,
+                fontSize: 25,
+                lineHeight: 1.4,
                 color: COLORS.INK,
               }}
             >
@@ -285,8 +292,9 @@ export const LinkNode: React.FC<{
                 fontFamily: FONTS.EN_TITLE,
                 fontWeight: 700,
                 fontSize: 22,
+                lineHeight: 1.2,
                 color: COLORS.INK,
-                marginTop: 8,
+                marginTop: 6,
               }}
             >
               {labels.join(' · ')}
@@ -330,13 +338,6 @@ export const StudyCard: React.FC<{
   const frame = useCurrentFrame();
   const rel = Math.max(0, frame - startFrame);
 
-  // Reveal timeline
-  // Card drawn 0.20-0.70s (frames 5 to 17)
-  // Title 0.75-1.25s (frames 18 to 30)
-  // Tags 1.25s (frame 30)
-  // Line 1.35-1.55s (frames 32 to 37)
-  // Blocks 1.50-3.10s (frames 36 to 74)
-  // Glossary 3.30-4.30s (frames 79 to 103)
   const showTitle = rel >= 13;
   const showTags = rel >= 25;
   const showLines = rel >= 28;
@@ -355,9 +356,9 @@ export const StudyCard: React.FC<{
       }}
     >
       <SketchBox x={0} y={0} w={1800} h={870} seed={99} startFrame={0} drawDurationFrames={12}>
-        <div style={{padding: '24px 36px', height: '100%', boxSizing: 'border-box', position: 'relative'}}>
+        <div style={{padding: '20px 36px', height: '100%', boxSizing: 'border-box', position: 'relative'}}>
           {/* Header */}
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 60}}>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 54}}>
             {/* Left: Slide Tags */}
             <div style={{display: 'flex', gap: 12, opacity: showTags ? 1 : 0}}>
               {slideTags.map((tag, i) => (
@@ -366,7 +367,7 @@ export const StudyCard: React.FC<{
                   style={{
                     border: `2px solid ${COLORS.INK}`,
                     borderRadius: 8,
-                    padding: '4px 12px',
+                    padding: '3px 12px',
                     fontFamily: FONTS.EN_TITLE,
                     fontWeight: 700,
                     fontSize: 26,
@@ -385,7 +386,7 @@ export const StudyCard: React.FC<{
                 style={{
                   fontFamily: FONT_FAMILIES.HOOK,
                   fontWeight: 700,
-                  fontSize: 48,
+                  fontSize: 46,
                   color: COLORS.INK,
                 }}
               >
@@ -401,14 +402,14 @@ export const StudyCard: React.FC<{
                 width: '100%',
                 height: 2,
                 backgroundColor: COLORS.INK,
-                marginTop: 12,
-                marginBottom: 16,
+                marginTop: 10,
+                marginBottom: 14,
               }}
             />
           )}
 
           {/* Content Columns */}
-          <div style={{display: 'flex', height: 720, gap: 30}}>
+          <div style={{display: 'flex', height: 745, gap: 30}}>
             {/* Left Column: Verbatim Slide Text */}
             <div
               dir="ltr"
@@ -416,17 +417,27 @@ export const StudyCard: React.FC<{
                 flex: isTwoColumnText ? 1 : 1.7,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 20,
+                gap: 18,
                 opacity: showBlocks ? 1 : 0,
               }}
             >
               {blocks.map((b, bi) => (
                 <div key={bi} style={{display: 'flex', flexDirection: 'column', gap: 6}}>
                   <div style={{display: 'flex', alignItems: 'center', gap: 10}}>
-                    <span style={{fontFamily: FONTS.EN_TITLE, fontWeight: 700, fontSize: 30, color: COLORS.INK}}>
+                    <span
+                      style={{
+                        border: `2px solid ${COLORS.INK}`,
+                        borderRadius: 6,
+                        padding: '1px 10px',
+                        fontFamily: FONTS.EN_TITLE,
+                        fontWeight: 700,
+                        fontSize: 25,
+                        color: COLORS.INK,
+                      }}
+                    >
                       Slide {b.slideNumber}
                     </span>
-                    <span style={{fontFamily: FONTS.BODY, fontWeight: 700, fontSize: 32, color: COLORS.INK}}>
+                    <span style={{fontFamily: FONTS.BODY, fontWeight: 700, fontSize: 31, color: COLORS.INK}}>
                       {b.title}
                     </span>
                   </div>
@@ -437,8 +448,8 @@ export const StudyCard: React.FC<{
                       style={{
                         fontFamily: FONTS.BODY,
                         fontWeight: 600,
-                        fontSize: 27,
-                        lineHeight: 1.45,
+                        fontSize: 26,
+                        lineHeight: 1.42,
                         color: COLORS.INK,
                         whiteSpace: 'pre-line',
                       }}
@@ -453,10 +464,12 @@ export const StudyCard: React.FC<{
                         src={staticFile(b.imageSrc)}
                         alt="Slide Fig"
                         style={{
-                          maxHeight: 240,
+                          maxHeight: 230,
                           maxWidth: '90%',
                           border: `2px solid ${COLORS.INK}`,
                           objectFit: 'contain',
+                          backgroundColor: '#FFFFFF',
+                          padding: 6,
                         }}
                       />
                       <span style={{fontFamily: FONTS.BODY, fontWeight: 500, fontSize: 22, color: COLORS.MUTED, marginTop: 4}}>
@@ -476,7 +489,7 @@ export const StudyCard: React.FC<{
 
             {/* Vertical Line */}
             {showLines && (
-              <div style={{width: 2, height: '90%', backgroundColor: COLORS.INK, alignSelf: 'center'}} />
+              <div style={{width: 2, height: '94%', backgroundColor: COLORS.INK, alignSelf: 'center'}} />
             )}
 
             {/* Right Column: Glossary or Column 2 for V1 */}
@@ -487,17 +500,27 @@ export const StudyCard: React.FC<{
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 20,
+                  gap: 18,
                   opacity: showBlocks ? 1 : 0,
                 }}
               >
                 {blocksCol2.map((b, bi) => (
                   <div key={bi} style={{display: 'flex', flexDirection: 'column', gap: 6}}>
                     <div style={{display: 'flex', alignItems: 'center', gap: 10}}>
-                      <span style={{fontFamily: FONTS.EN_TITLE, fontWeight: 700, fontSize: 30, color: COLORS.INK}}>
+                      <span
+                        style={{
+                          border: `2px solid ${COLORS.INK}`,
+                          borderRadius: 6,
+                          padding: '1px 10px',
+                          fontFamily: FONTS.EN_TITLE,
+                          fontWeight: 700,
+                          fontSize: 25,
+                          color: COLORS.INK,
+                        }}
+                      >
                         Slide {b.slideNumber}
                       </span>
-                      <span style={{fontFamily: FONTS.BODY, fontWeight: 700, fontSize: 32, color: COLORS.INK}}>
+                      <span style={{fontFamily: FONTS.BODY, fontWeight: 700, fontSize: 31, color: COLORS.INK}}>
                         {b.title}
                       </span>
                     </div>
@@ -507,8 +530,8 @@ export const StudyCard: React.FC<{
                         style={{
                           fontFamily: FONTS.BODY,
                           fontWeight: 600,
-                          fontSize: 27,
-                          lineHeight: 1.45,
+                          fontSize: 26,
+                          lineHeight: 1.42,
                           color: COLORS.INK,
                           whiteSpace: 'pre-line',
                         }}
@@ -526,7 +549,7 @@ export const StudyCard: React.FC<{
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 10,
+                  gap: glossary.length >= 9 ? 3 : 6,
                   opacity: showGlossary ? 1 : 0,
                 }}
               >
@@ -535,8 +558,9 @@ export const StudyCard: React.FC<{
                     fontFamily: FONT_FAMILIES.HOOK,
                     fontWeight: 700,
                     fontSize: 36,
+                    lineHeight: 1.15,
                     color: COLORS.INK,
-                    marginBottom: 8,
+                    marginBottom: 4,
                   }}
                 >
                   مصطلحات مهمة
@@ -548,8 +572,10 @@ export const StudyCard: React.FC<{
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: 2,
-                      paddingBottom: 6,
+                      gap: 1,
+                      height: glossary.length >= 9 ? 61 : 65,
+                      justifyContent: 'center',
+                      boxSizing: 'border-box',
                     }}
                   >
                     <div
@@ -557,9 +583,11 @@ export const StudyCard: React.FC<{
                       style={{
                         fontFamily: FONTS.EN_TITLE,
                         fontWeight: 700,
-                        fontSize: 26,
+                        fontSize: 25,
+                        lineHeight: 1.1,
                         color: COLORS.INK,
                         textAlign: 'right',
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       {g.term}
@@ -569,8 +597,10 @@ export const StudyCard: React.FC<{
                       style={{
                         fontFamily: FONTS.BODY,
                         fontWeight: 500,
-                        fontSize: 24,
+                        fontSize: 23,
+                        lineHeight: 1.15,
                         color: COLORS.MUTED,
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       {g.meaning}
@@ -585,7 +615,6 @@ export const StudyCard: React.FC<{
     </div>
   );
 };
-
 
 // 6. PinnedPhoto (Section 5.3: CARD fill, padding 14px, SketchBox border, 2 tape strips #E9DDC4 at 0.85, no shadow)
 export const PinnedPhoto: React.FC<{
@@ -693,6 +722,159 @@ export const PinnedPhoto: React.FC<{
       />
 
       {children}
+    </div>
+  );
+};
+
+// 7. LayoutL (Section 5.3 & 5.4: LAYOUT_L — «الموضوع ده مرتبط بإيه؟»)
+export interface LayoutLNodeData {
+  position: 'N1' | 'N2' | 'N3';
+  directionText: string;
+  topicTitle: string;
+  arabicText: string;
+  labels: string[];
+  crop?: {src: string; region: {x0: number; x1: number; y0: number; y1: number}};
+  icon?: React.ReactNode;
+}
+
+export const LayoutL: React.FC<{
+  centerTopicTitle: string;
+  centerSlideTag: string;
+  nodes: LayoutLNodeData[];
+  nextTopicTitle?: string;
+}> = ({centerTopicTitle, centerSlideTag, nodes, nextTopicTitle}) => {
+  const frame = useCurrentFrame();
+  const isLongTitle = centerTopicTitle.length > 26;
+  const singleLink = nodes.length === 1;
+
+  const centerTextOpacity = frame >= 26 ? Math.min(1, (frame - 26) / 5) : 0;
+  const linkStartTimes = singleLink ? [1.4] : [1.4, 2.5, 3.6];
+  const nextChipFrame = singleLink ? Math.round(2.6 * 24) : Math.round(4.8 * 24);
+
+  return (
+    <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080}}>
+      {/* Title at center (960, 110) */}
+      <HandWrite
+        text="الموضوع ده مرتبط بإيه؟"
+        startFrame={5}
+        durationFrames={14}
+        rtl
+        style={{
+          position: 'absolute',
+          left: 960,
+          top: 110,
+          transform: 'translate(-50%, -50%)',
+          fontFamily: FONTS.HOOK,
+          fontWeight: 700,
+          fontSize: 64,
+          color: COLORS.INK,
+          zIndex: 25,
+        }}
+      />
+
+      {/* Center Card: x 700 -> 1220 (w 520), y 330 -> 560 (h 230) */}
+      {frame >= 20 && (
+        <SketchBox x={700} y={330} w={520} h={230} startFrame={20} drawDurationFrames={11} seed={301}>
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '18px 20px',
+              boxSizing: 'border-box',
+              opacity: centerTextOpacity,
+            }}
+          >
+            <div
+              dir="rtl"
+              style={{
+                fontFamily: FONTS.BODY,
+                fontWeight: 600,
+                fontSize: 24,
+                color: COLORS.RED,
+              }}
+            >
+              إحنا هنا
+            </div>
+            <div
+              dir="ltr"
+              style={{
+                fontFamily: FONTS.EN_TITLE,
+                fontWeight: 700,
+                fontSize: isLongTitle ? 34 : 40,
+                lineHeight: 1.15,
+                color: COLORS.INK,
+                textAlign: 'center',
+              }}
+            >
+              {centerTopicTitle}
+            </div>
+            <div
+              dir="ltr"
+              style={{
+                fontFamily: FONTS.EN_TITLE,
+                fontWeight: 700,
+                fontSize: 24,
+                color: COLORS.MUTED,
+              }}
+            >
+              {centerSlideTag}
+            </div>
+          </div>
+        </SketchBox>
+      )}
+
+      {/* Link Nodes & Arrows */}
+      {nodes.map((node, idx) => {
+        const t0 = linkStartTimes[idx] ?? 1.4 + idx * 1.1;
+        const arrowStart = Math.round(t0 * 24);
+        const nodeStart = Math.round((t0 + 0.25) * 24);
+
+        let rect = {x: 360, y: 640, w: 820, h: 260};
+        let arrowCoords = {x1: 960, y1: 560, x2: 960, y2: 640};
+        if (node.position === 'N1') {
+          rect = {x: 60, y: 200, w: 580, h: 300};
+          arrowCoords = {x1: 700, y1: 445, x2: 640, y2: 350};
+        } else if (node.position === 'N2') {
+          rect = {x: 1280, y: 200, w: 580, h: 300};
+          arrowCoords = {x1: 1220, y1: 445, x2: 1280, y2: 350};
+        }
+
+        return (
+          <React.Fragment key={node.position}>
+            <Arrow
+              x1={arrowCoords.x1}
+              y1={arrowCoords.y1}
+              x2={arrowCoords.x2}
+              y2={arrowCoords.y2}
+              color={COLORS.INK}
+              strokeWidth={5}
+              startFrame={arrowStart}
+              durationFrames={7}
+            />
+            <LinkNode
+              x={rect.x}
+              y={rect.y}
+              w={rect.w}
+              h={rect.h}
+              directionText={node.directionText}
+              topicTitle={node.topicTitle}
+              arabicText={node.arabicText}
+              labels={node.labels}
+              crop={node.crop}
+              icon={node.icon}
+              startFrame={nodeStart}
+              seed={310 + idx * 10}
+            />
+          </React.Fragment>
+        );
+      })}
+
+      {/* NextChip */}
+      {nextTopicTitle && <NextChip nextTitle={nextTopicTitle} startFrame={nextChipFrame} />}
     </div>
   );
 };
