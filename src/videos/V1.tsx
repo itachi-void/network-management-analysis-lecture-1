@@ -18,6 +18,7 @@ import {
   SceneFade,
   SlideBadge,
   PinnedPhoto,
+  BidiText,
 } from '../components';
 import {IconCalendar, IconChecklist} from '../icons';
 import {texts} from './V1.data';
@@ -55,7 +56,7 @@ const HandWrite: React.FC<{
         ...style,
       }}
     >
-      {text}
+      {rtl ? <BidiText text={text} /> : text}
     </div>
   );
 };

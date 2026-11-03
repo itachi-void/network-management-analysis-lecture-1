@@ -3,6 +3,7 @@ import React from 'react';
 import {useCurrentFrame, staticFile} from 'remotion';
 import {COLORS, FONTS} from '../theme';
 import {FONT_FAMILIES} from '../lib/fonts';
+import {BidiText} from '../lib/bidi';
 import {SketchBox, Arrow, HandWrite} from './index';
 
 // 1. AgendaChip (Section 5.4 & 5.8: Top-left topic chip for S1 of V2..V8)
@@ -235,7 +236,7 @@ export const LinkNode: React.FC<{
               marginBottom: 4,
             }}
           >
-            {directionText}
+            <BidiText text={directionText} />
           </div>
 
           {/* Topic */}
@@ -280,7 +281,7 @@ export const LinkNode: React.FC<{
                 color: COLORS.INK,
               }}
             >
-              {arabicText}
+              <BidiText text={arabicText} />
             </div>
           </div>
 
@@ -603,7 +604,7 @@ export const StudyCard: React.FC<{
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}

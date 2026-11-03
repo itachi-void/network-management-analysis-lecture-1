@@ -25,6 +25,7 @@ import {
   PinnedPhoto,
   SvgDiamond,
   LayoutL,
+  BidiText,
 } from '../components';
 import {
   IconOfficeBuilding,
@@ -1475,7 +1476,7 @@ const Scene10: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}

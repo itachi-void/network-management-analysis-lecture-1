@@ -23,6 +23,7 @@ import {
   PinnedPhoto,
   Spotlight,
   LayoutL,
+  BidiText,
 } from '../components';
 import {
   IconNasBox,
@@ -1747,7 +1748,7 @@ const Scene9: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}

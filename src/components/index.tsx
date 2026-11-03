@@ -14,6 +14,8 @@ import {COLORS, FONTS} from '../theme';
 import {BidiText} from '../lib/bidi';
 import {RegionPct} from '../lib/camera';
 
+export {BidiText};
+
 // 1. Paper Background (Section 5.4: zIndex 0, static paper.png)
 export const Paper: React.FC = () => {
   return (
@@ -698,7 +700,7 @@ export const HandWrite: React.FC<{
         ...style,
       }}
     >
-      {text}
+      {rtl ? <BidiText text={text} /> : text}
     </div>
   );
 };
@@ -730,6 +732,8 @@ export const WordReveal: React.FC<{
         const op = Math.min(1, wordRel / 3);
         const ty = (1 - op) * 4;
 
+        const isEnglish = /[A-Za-z]/.test(w);
+
         return (
           <span
             key={idx}
@@ -741,7 +745,7 @@ export const WordReveal: React.FC<{
               marginLeft: rtl ? '0.25em' : undefined,
             }}
           >
-            {w}
+            {isEnglish ? <bdi dir="ltr">{w}</bdi> : w}
           </span>
         );
       })}

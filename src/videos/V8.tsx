@@ -25,6 +25,7 @@ import {
   Spotlight,
   Camera,
   LayoutL,
+  BidiText,
 } from '../components';
 import {
   IconSwitch,
@@ -1518,7 +1519,7 @@ const Scene11: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}

@@ -24,6 +24,7 @@ import {
   PinnedPhoto,
   Spotlight,
   LayoutL,
+  BidiText,
 } from '../components';
 import {
   IconRack,
@@ -972,7 +973,7 @@ const Scene6: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}

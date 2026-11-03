@@ -23,6 +23,7 @@ import {
   PinnedPhoto,
   LayoutL,
   StudyCard,
+  BidiText,
 } from '../components';
 import {
   IconServerBox,
@@ -662,7 +663,7 @@ const Scenes3To8: React.FC = () => {
               zIndex: 14,
             }}
           >
-            {getText('V2-S4', 'phys_ar')}
+            <BidiText text={getText('V2-S4', 'phys_ar')} />
           </div>
         )}
 
@@ -1398,7 +1399,7 @@ const Scene10: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}

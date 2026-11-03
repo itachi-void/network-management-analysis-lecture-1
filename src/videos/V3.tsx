@@ -26,6 +26,7 @@ import {
   Spotlight,
   Tag,
   LayoutL,
+  BidiText,
 } from '../components';
 import {
   IconServerTower,
@@ -705,7 +706,7 @@ const Scene6: React.FC = () => {
       {/* Audio */}
       <Sfx name="whoosh_soft" at={0.0} />
       <Sfx name="pencil_loop" at={0.35} dur={0.6} />
-      <Sfx name="pencil_loop" at={1.0} dur={1.0} gainDb={-3} />
+      <Sfx name="pencil_loop" at={1.0} dur={0.83} gainDb={-3} />
       {rows.map((r, i) => (
         <React.Fragment key={i}>
           <Sfx name="pencil_loop" at={r.t} dur={0.6} gainDb={-3} />
@@ -1734,7 +1735,7 @@ const Scene13: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {g.meaning}
+                      <BidiText text={g.meaning} />
                     </div>
                   </div>
                 ))}
